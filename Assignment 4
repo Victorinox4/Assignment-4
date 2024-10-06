@@ -1,0 +1,40 @@
+import random
+from collections import Counter
+
+# Function to load words from a file
+def load_words(file_path):
+    """Load English words into a set for fast lookup."""
+    with open(file_path, 'r') as f:
+        return set(f.read().splitlines())
+
+# Letters Round
+def letters_round():
+    """Conduct the letters round of the game."""
+    vowels = 'AEIOU'
+    consonants = 'BCDFGHJKLMNPQRSTVWXYZ'
+    letters = []
+
+    for _ in range(10):  # Ask for 10 letters
+        choice = input("Choose 'v' for vowel or 'c' for consonant: ").lower()
+        if choice == 'v':
+            letters.append(random.choice(vowels))
+        elif choice == 'c':
+            letters.append(random.choice(consonants))
+        else:
+            print("Invalid choice! Please choose 'v' or 'c'.")
+            continue
+
+    print("Letters available:", ''.join(letters))
+    user_word = input("Enter the longest word you can form with the letters: ").upper()
+    return letters, user_word
+
+def find_longest_word(letters, word_set):
+    """Find the longest valid word that can be formed with the given letters."""
+    max_length = 0
+    longest_word = ""
+    
+    for word in word_set:
+        if len(word) > max_length and can_form_word(word, letters):
+            max_length = len(word)
+            longest_word = word
+           
