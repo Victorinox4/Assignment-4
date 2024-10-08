@@ -1,40 +1,90 @@
 import random
-from collections import Counter
 
-# Function to load words from a file
-def load_words(file_path):
-    """Load English words into a set for fast lookup."""
-    with open(file_path, 'r') as f:
-        return set(f.read().splitlines())
+#Numbers Round
+users_guess = input('Take your guess, 1 number, and then an operation, etc...')
+def generate_three_digit_number():
+    return random.randint(100, 999)
+def generate_six_random_numbers():
+    list = [1,2,3,4,5,6,7,8,9,10,25,50,75,100]
+    y= 0
+    z=[]
+    while y!=6:
+        x = list[random.randint(0, len(list))-1]
+        y +=1
+        z.append(x)    
+    print('Here are your numbers:',z)
+    return 
+def validate_users_guess(users_guess):
+    pattern = r'^[0-100+-/*().\s]+$'
+def read_users_guess(users_guess):
+    result = eval(users_guess)
+    return result
+def mesure_diff(users_guess):
+    return generate_three_digit_number() - eval(users_guess)
+def score(users_guess):
+    return f" Here is your score {100 - mesure_diff//10}"
+def start_game(users_guess):
+    print('Here is your goal', generate_three_digit_number())
+    generate_six_random_numbers()
+    users_guess = input('Take your guess, 1 number, and then an operation, etc...')
+    validate_users_guess(users_guess)
+    read_users_guess(users_guess)
+    mesure_diff(users_guess)
+    score(users_guess)
+if __name__ == '__main__':
+    start_game(users_guess)
+ #start the game just by running it, and press esc one time
 
-# Letters Round
-def letters_round():
-    """Conduct the letters round of the game."""
-    vowels = 'AEIOU'
-    consonants = 'BCDFGHJKLMNPQRSTVWXYZ'
-    letters = []
 
-    for _ in range(10):  # Ask for 10 letters
-        choice = input("Choose 'v' for vowel or 'c' for consonant: ").lower()
-        if choice == 'v':
-            letters.append(random.choice(vowels))
-        elif choice == 'c':
-            letters.append(random.choice(consonants))
-        else:
-            print("Invalid choice! Please choose 'v' or 'c'.")
-            continue
+#Letters Round
 
-    print("Letters available:", ''.join(letters))
-    user_word = input("Enter the longest word you can form with the letters: ").upper()
-    return letters, user_word
-
-def find_longest_word(letters, word_set):
-    """Find the longest valid word that can be formed with the given letters."""
-    max_length = 0
+import random
+def c_or_v():
+    consonants=['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','z']
+    vowels=['a','e','i','o','u','y']
+    x = 0
+    y=[]
+    while x != 10:
+        x+=1
+        choice = int(input('Do you want a c (0) or a v (1)?'))
+        if choice == 0:
+            i=consonants[random.randint(0, len(consonants))-1]
+            y.append(i)
+            print ('Here is your consonant', i)
+        else :
+            u=vowels[random.randint(0, len(vowels))-1]
+            y.append(u)
+            print('Here is your vowel', u)
+    print('Make the longest word possible using', y)
+    return y
+def load_words():
+    with open('hangman_wordlist.txt') as word_file:
+        valid_words = set(word_file.read().split())
+    return valid_words
+def can_form_word(word, letters):
+    letter_count = {}
+    for letter in letters:
+        letter_count[letter] = letter_count.get(letter, 0) + 1
+    for letter in word:
+        if letter_count.get(letter, 0) == 0:
+            return False
+        letter_count[letter] -= 1
+    return True
+def find_longest_word(letters, word_list):
     longest_word = ""
-    
-    for word in word_set:
-        if len(word) > max_length and can_form_word(word, letters):
-            max_length = len(word)
-            longest_word = word
-           
+    for word in word_list:
+        if can_form_word(word, letters):
+            if len(word) > len(longest_word):
+                longest_word = word
+    return longest_word
+def score2():
+    return f"Here is your score {100 - (len(find_longest_word(y))- len(user_guess2))*10}"
+def start_game2():
+    c_or_v()
+    user_guess2= input('What is your final word?')
+    load_words()
+    can_form_word(word,y)
+    find_longest_word(y, word_lists)
+    score2()
+if __name__ == '__main__':
+    start_game2()
